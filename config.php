@@ -18,7 +18,7 @@
 		
 	/** caminho no server para o sistema **/
 	if ( !defined('BASEURL') )
-		define('BASEURL', '/crud-PW/');
+		define('BASEURL', '/PW3_2BIM_2025/');
 		
 	/** caminho do arquivo de banco de dados **/
 	if ( !defined('DBAPI') )
@@ -30,4 +30,7 @@
 	
 	/** camnho para as classes para o PDF **/
 	define('PDF', ABSPATH . 'inc/pdf.php');
+
+	/** caminhos para o modal do cookie **/
+ 	define ("COOKIE_TEMPLATE", ABSPATH . "inc/cookiemodal.php");
 ?>

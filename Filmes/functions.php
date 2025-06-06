@@ -94,6 +94,8 @@ function add() {
  * Edição de Filme
  */
 function edit() {
+    global $filme;
+
     $now = new DateTime('now', new DateTimeZone('America/Sao_Paulo'));
 
     if (isset($_GET['id'])) {
@@ -104,6 +106,9 @@ function edit() {
                 $filme = $_POST['filme'];
                 $filme['modified'] = $now->format("Y-m-d H:i:s");
 
+                $filme_existente = find('filmes', $id); // Pega os dados antigos
+
+                // Se uma nova imagem foi enviada:
                 if (!empty($_FILES["foto"]["name"])) {
                     $pasta_destino = PASTA_IMAGENS;
                     $arquivo_destino = $pasta_destino . basename($_FILES["foto"]["name"]);
@@ -113,14 +118,30 @@ function edit() {
                     $tamanho_arquivo = $_FILES["foto"]["size"];
 
                     if ($nome_temp && getimagesize($nome_temp)) {
+                        // Remove a imagem antiga, se existir e não for "SemImagem.png"
+                        if (!empty($filme_existente['foto']) && $filme_existente['foto'] !== 'SemImagem.png') {
+                            $imagem_antiga = PASTA_IMAGENS . $filme_existente['foto'];
+                            if (file_exists($imagem_antiga)) {
+                                unlink($imagem_antiga);
+                            }
+                        }
+
+                        // Upload da nova imagem
                         upload($pasta_destino, $arquivo_destino, $tipo_arquivo, $nome_temp, $tamanho_arquivo);
                         $filme['foto'] = $nomearquivo;
                     } else {
                         throw new Exception("Erro no carregamento da imagem.");
                     }
+                } else {
+                    // Se nenhuma imagem nova foi enviada, mantém a existente
+                    if (!empty($filme_existente['foto'])) {
+                        $filme['foto'] = $filme_existente['foto'];
+                    }
                 }
 
                 update('filmes', $id, $filme);
+                $_SESSION['message'] = "Filme atualizado com sucesso!";
+                $_SESSION['type'] = "success";
                 header('Location: index.php');
                 exit;
 
@@ -129,7 +150,7 @@ function edit() {
                 $_SESSION['type'] = "danger";
             }
         } else {
-            global $filme;
+            // Carrega os dados do filme no formulário
             $filme = find('filmes', $id);
         }
     } else {

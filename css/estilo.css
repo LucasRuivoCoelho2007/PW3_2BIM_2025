@@ -355,7 +355,7 @@ nav, form{
 	padding-top: 10px;
 	display: flex;
 }
-@media only screen and (max-width: 950px){
+@media only screen and (max-width: 1000px){
 	.card-login{
 		width: 85%
 	}

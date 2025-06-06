@@ -35,6 +35,82 @@ if (isset($_SESSION['user'])){ // Verifica se tem um usuário logado
 ?>
 
 <?php include(HEADER_TEMPLATE); ?>
+
+<style>
+/* Responsividade da tabela: scroll horizontal em telas pequenas */
+.tbl-responsive {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch; /* smooth scroll no iOS */
+}
+
+/* Garantir que a tabela ocupe 100% da largura do container */
+.tbl {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: auto;
+}
+
+/* Quebra de texto nas células para evitar overflow */
+.tbl td, .tbl th {
+    word-wrap: break-word;
+    word-break: break-word;
+    white-space: normal;
+}
+
+/* Mais espaço para colunas ID, Ano e Preço */
+/* ID: 1ª coluna */
+/* Ano: 4ª coluna */
+/* Preço: 5ª coluna */
+.tbl th:nth-child(1),
+.tbl td:nth-child(1) {
+    min-width: 80px; /* aumento do espaço para ID */
+    width: 80px;
+    text-align: center;
+}
+
+.tbl th:nth-child(4),
+.tbl td:nth-child(4) {
+    min-width: 100px; /* aumento do espaço para Ano */
+    width: 100px;
+    text-align: center;
+}
+
+.tbl th:nth-child(5),
+.tbl td:nth-child(5) {
+    min-width: 150px; /* aumento do espaço para Preço */
+    width: 150px;
+    text-align: right;
+}
+@media only screen and (max-width: 1000px) {
+  .tbl thead {
+    display: none;
+  }
+
+  .tbl tr, .tbl td {
+    display: block;
+    width: 100%;
+    text-align: left;
+    border: none;
+    padding: 10px 0;
+  }
+
+  .tbl tr {
+    margin-bottom: 1rem;
+    border-bottom: 1px solid #514869;
+  }
+
+  /* Remove largura fixa de ID, Ano e Preço em telas pequenas */
+  .tbl td:nth-child(1),
+  .tbl td:nth-child(4),
+  .tbl td:nth-child(5) {
+    min-width: auto;
+    width: 100%;
+    text-align: left; /* opcional: muda alinhamento se quiser */
+  }
+}
+
+</style>
+
 <header class="mt-3 mb-4">
     <?php if (!empty($_SESSION['message'])) : ?>
         <div class="alert alert-<?php echo $_SESSION['type']; ?> alert-dismissible fade show" role="alert">
@@ -73,7 +149,6 @@ if (isset($_SESSION['user'])){ // Verifica se tem um usuário logado
     </div>
 </header>
 
-
 <hr>
 
 <div class="main-login">
@@ -93,59 +168,61 @@ if (isset($_SESSION['user'])){ // Verifica se tem um usuário logado
                 </div>
             </form>
 
-            <table class="tbl">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Nome</th>
-                        <th>Diretor</th>
-                        <th>Ano</th>
-                        <th>Preço</th>
-                        <th>Foto</th>
-                        <th>Atualizado em</th>
-                        <th colspan="3">Opções</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php if ($filmes) : ?>
-                        <?php foreach ($filmes as $filme) : ?>
-                            <tr>
-                                <td data-lable="ID:"><?php echo $filme['id']; ?></td>
-                                <td data-lable="Nome:"><?php echo $filme['nome']; ?></td>
-                                <td data-lable="Diretor:"><?php echo $filme['diretor']; ?></td>
-                                <td data-lable="Ano:"><?php echo $filme['ano']; ?></td>
-                                <td data-lable="Preço">R$ <?php echo $filme['preco']; ?></td>
-                                
-                                <td data-lable="Foto:">
-                                    <?php if (!empty($filme['foto'])): ?>
-                                        <img src="img/<?php echo $filme['foto']; ?>" class="shadow p-1 mb-1 bg-body rounded" width="100px">
-                                    <?php else: ?>
-                                        <img src="img/SemImagem.png" class="shadow p-1 mb-1 bg-body rounded" width="100px">
-                                    <?php endif; ?>
-                                </td>
-
-                                <?php $data = new DateTime($filme['modified'], new DateTimeZone("America/Sao_Paulo")); ?>
-                                <td data-lable="Atualizado em: "><?php echo $data->format("d/m/Y - H:i:s"); ?></td>
-                                <td data-lable="Vizualizar">
-                                    <a href="view.php?id=<?php echo $filme['id']; ?>" class="btn_view"><i class="fa fa-eye"></i></a>
-                                </td>
-                                <td data-lable="Editar">
-                                    <a href="edit.php?id=<?php echo $filme['id']; ?>" class="btn_edit"><i class="fa fa-pencil"></i></a>
-                                </td>
-                                <td data-lable="Excluir">
-                                    <a href="#" class="btn_trash" data-bs-toggle="modal" data-bs-target="#delete-modal" data-customer="<?php echo $filme['id']; ?>">
-                                        <i class="fa fa-trash"></i>
-                                    </a>
-                                </td>
-                            </tr>
-                        <?php endforeach; ?>
-                    <?php else : ?>
+            <div class="tbl-responsive">
+                <table class="tbl">
+                    <thead>
                         <tr>
-                            <td colspan="10">Nenhum registro encontrado.</td>
+                            <th>ID</th>
+                            <th>Nome</th>
+                            <th>Diretor</th>
+                            <th>Ano</th>
+                            <th>Preço</th>
+                            <th>Foto</th>
+                            <th>Atualizado em</th>
+                            <th colspan="3">Opções</th>
                         </tr>
-                    <?php endif; ?>
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        <?php if ($filmes) : ?>
+                            <?php foreach ($filmes as $filme) : ?>
+                                <tr>
+                                    <td data-lable="ID:"><?php echo $filme['id']; ?></td>
+                                    <td data-lable="Nome:"><?php echo $filme['nome']; ?></td>
+                                    <td data-lable="Diretor:"><?php echo $filme['diretor']; ?></td>
+                                    <td data-lable="Ano:"><?php echo $filme['ano']; ?></td>
+                                    <td data-lable="Preço">R$ <?php echo number_format($filme['preco'], 2, ',', '.'); ?></td>
+
+                                    <td data-lable="Foto:">
+                                        <?php if (!empty($filme['foto'])): ?>
+                                            <img src="img/<?php echo $filme['foto']; ?>" class="shadow p-1 mb-1 bg-body rounded" width="100px">
+                                        <?php else: ?>
+                                            <img src="img/SemImagem.png" class="shadow p-1 mb-1 bg-body rounded" width="100px">
+                                        <?php endif; ?>
+                                    </td>
+
+                                    <?php $data = new DateTime($filme['modified'], new DateTimeZone("America/Sao_Paulo")); ?>
+                                    <td data-lable="Atualizado em: "><?php echo $data->format("d/m/Y - H:i:s"); ?></td>
+                                    <td data-lable="Vizualizar">
+                                        <a href="view.php?id=<?php echo $filme['id']; ?>" class="btn_view"><i class="fa fa-eye"></i></a>
+                                    </td>
+                                    <td data-lable="Editar">
+                                        <a href="edit.php?id=<?php echo $filme['id']; ?>" class="btn_edit"><i class="fa fa-pencil"></i></a>
+                                    </td>
+                                    <td data-lable="Excluir">
+                                        <a href="#" class="btn_trash" data-bs-toggle="modal" data-bs-target="#delete-modal" data-customer="<?php echo $filme['id']; ?>">
+                                            <i class="fa fa-trash"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                            <?php endforeach; ?>
+                        <?php else : ?>
+                            <tr>
+                                <td colspan="10">Nenhum registro encontrado.</td>
+                            </tr>
+                        <?php endif; ?>
+                    </tbody>
+                </table>
+            </div>
 
         </div>
     </div>

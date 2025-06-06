@@ -8,12 +8,12 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<title>Cadastro</title>
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.2/css/font-awesome.min.css">
         <link rel="stylesheet" href="<?php echo BASEURL; ?>css/bootstrap/bootstrap.min.css">
 		<link rel="stylesheet" href="<?php echo BASEURL; ?>css/awesome.all.min.css">
 		<link rel="stylesheet" href="<?php echo BASEURL; ?>css/estilo.css">
 		<link rel="stylesheet" href="<?php echo BASEURL; ?>css/footer.css">
+        <link rel="icon" href="<?php echo BASEURL; ?>img/video-camera.png" type="image/png">
 
 		<style>
 			body {
