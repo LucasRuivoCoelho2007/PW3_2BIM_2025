@@ -1,4 +1,6 @@
 <?php 
+
+
     include "functions.php";
 
     if (!isset($_SESSION)) session_start();
