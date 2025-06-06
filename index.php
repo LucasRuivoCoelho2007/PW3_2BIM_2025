@@ -1,6 +1,6 @@
 <?php
 require "config.php"; 
-include(DBAPI); 
+include DBAPI; 
 include(HEADER_TEMPLATE); 
 $db = open_database();
 
